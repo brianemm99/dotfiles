@@ -1,0 +1,60 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        if [ -f "$rc" ]; then
+            . "$rc"
+        fi
+    done
+fi
+unset rc
+
+#
+#
+set -o vi
+set show-mode-in-prompt on
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# nvim as default EDITOR
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# eval "$(starship init bash)"
+
+# kubectl completion
+
+# alias k='kubectl'
+
+# [[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
+
+# source <(kubectl completion bash)
+
+# complete -o default -F __start_kubectl k
+
+# k3s kubeconfig
+# export KUBECONFIG=~/.kube/k3s.yaml
+
+# devsy dev containers
+# source <(devsy completion bash)
+# dws() { devsy workspace "$@"; }
+
+# export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
