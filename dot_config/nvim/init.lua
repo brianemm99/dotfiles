@@ -1,4 +1,6 @@
 vim.opt.autoindent = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- 2-space indentation everywhere
 vim.opt.tabstop = 2
