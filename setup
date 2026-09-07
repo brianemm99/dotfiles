@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEST="$HOME/.local/share/chezmoi"
+
+if [ ! -d "$DEST/.git" ]; then
+    mkdir -p "$HOME/.local/share"
+    rmdir "$DEST" 2>/dev/null || true
+    mv "$SRC" "$DEST"
+fi
+
+MISE="$HOME/.local/bin/mise"
+"$MISE" use -g chezmoi
+"$MISE" x -- chezmoi init --apply
+
