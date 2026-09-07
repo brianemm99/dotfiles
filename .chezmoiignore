@@ -1,3 +1,5 @@
+setup
+
 {{ if ne .chezmoi.osRelease.id "fedora" }}
 .config/sway
 {{ end }}

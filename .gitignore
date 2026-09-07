@@ -1,0 +1,40 @@
+bin/
+
+# ── Secrets & credentials ──────────────────────────
+*.pem
+*.key
+*.p12
+*_history
+.env
+.env.*
+.netrc
+secrets/
+**/secrets.*
+.ssh/*
+!.ssh/config
+!.ssh/*.pub
+!.ssh/known_hosts
+
+# GPG / cloud / tokens
+.gnupg/
+*.gpg
+*.asc
+.aws/credentials
+.config/**/token*
+.config/gh/hosts.yml
+
+# ── Generated / runtime state ──────────────────────
+tmux/plugins/
+tmux/resurrect/
+vimrc.local
+**/*.log
+*.bak
+*.old
+
+# ── Vim/editor droppings ───────────────────────────
+*.swp
+*.swo
+*~
+.viminfo
+quickshell/Theme/colors.json
+hypr/hyprpaper.conf
