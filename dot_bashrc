@@ -57,4 +57,4 @@ export VISUAL="nvim"
 # source <(devsy completion bash)
 # dws() { devsy workspace "$@"; }
 
-# export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+eval "$(mise activate bash)"
