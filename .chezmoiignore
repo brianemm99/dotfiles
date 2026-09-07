@@ -1,0 +1,6 @@
+{{ if ne .chezmoi.osRelease.id "fedora" }}
+.config/sway
+{{ end }}
+{{ if ne .chezmoi.osRelease.id "arch" }}
+.config/hypr
+{{ end }}
