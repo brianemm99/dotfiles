@@ -1,0 +1,6 @@
+[tools]
+bat = "latest"
+chezmoi = "latest"
+vim = "latest"
+neovim = "latest"
+tmux = "latest"
