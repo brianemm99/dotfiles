@@ -38,7 +38,7 @@ alias grep='grep --color=auto'
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-# eval "$(starship init bash)"
+eval "$(starship init bash)"
 
 # kubectl completion
 

@@ -2,4 +2,5 @@
 bat = "latest"
 chezmoi = "latest"
 neovim = "latest"
+starship = "latest"
 tmux = "latest"
