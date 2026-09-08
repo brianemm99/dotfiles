@@ -38,6 +38,8 @@ alias grep='grep --color=auto'
 export EDITOR="nvim"
 export VISUAL="nvim"
 
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+eval "$(mise activate bash)"
 eval "$(starship init bash)"
 
 # kubectl completion
@@ -57,4 +59,3 @@ eval "$(starship init bash)"
 # source <(devsy completion bash)
 # dws() { devsy workspace "$@"; }
 
-eval "$(mise activate bash)"
