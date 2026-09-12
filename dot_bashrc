@@ -27,7 +27,6 @@ unset rc
 #
 #
 set -o vi
-set show-mode-in-prompt on
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
