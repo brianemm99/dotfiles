@@ -38,3 +38,19 @@ vimrc.local
 .viminfo
 quickshell/Theme/colors.json
 hypr/hyprpaper.conf
+
+# Chezmoi dot_files
+dot_env
+dot_env.*
+dot_netrc
+dot_ssh/*
+!dot_ssh/config
+!dot_ssh/*.pub
+!dot_ssh/known_hosts
+dot_viminfo
+
+# Chezmoi cloud
+dot_gnupg/
+dot_aws/credentials
+dot_config/**/token*
+dot_config/gh/hosts.yml

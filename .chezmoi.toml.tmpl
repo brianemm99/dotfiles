@@ -1,0 +1,6 @@
+{{- $container := false -}}
+{{- if or (stat "/.dockerenv") (stat "/run/.containerenv") (env "REMOTE_CONTAINERS") -}}
+{{-   $container = true -}}
+{{- end -}}
+[data]
+    container = {{ $container }}

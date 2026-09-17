@@ -39,7 +39,7 @@ export VISUAL="nvim"
 
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 eval "$(mise activate bash)"
-eval "$(starship init bash)"
+command -v starship >/dev/null && eval "$(starship init bash)"
 
 # kubectl completion
 

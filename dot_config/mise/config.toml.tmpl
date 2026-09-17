@@ -3,4 +3,6 @@ bat = "latest"
 chezmoi = "latest"
 neovim = "latest"
 starship = "latest"
+{{- if not .container }}
 tmux = "latest"
+{{- end }}
