@@ -7,5 +7,9 @@ README.md
 {{ end }}
 {{ if or .container (ne .chezmoi.osRelease.id "arch") }}
 .config/hypr
+{{ end }}
+{{ if .container }}
 .config/quickshell
+.config/systemd/user/quickshell.service
+.config/systemd/user/sway-session.target.wants
 {{ end }}
