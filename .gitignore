@@ -24,8 +24,8 @@ secrets/
 .config/gh/hosts.yml
 
 # ── Generated / runtime state ──────────────────────
-tmux/plugins/
-tmux/resurrect/
+dot_config/tmux/plugins/
+dot_config/tmux/resurrect/
 vimrc.local
 **/*.log
 *.bak
@@ -36,8 +36,8 @@ vimrc.local
 *.swo
 *~
 .viminfo
-quickshell/Theme/colors.json
-hypr/hyprpaper.conf
+dot_config/quickshell/**/Theme/colors.json
+dot_config/hypr/hyprpaper.conf
 
 # Chezmoi dot_files
 dot_env

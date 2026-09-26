@@ -20,3 +20,8 @@ ostree:
   remove:
     - dunst
     - rofi
+
+# Desktop apps from Flathub, installed system-wide (Fedora only).
+flatpaks:
+  - com.discordapp.Discord
+  - com.spotify.Client

@@ -9,14 +9,66 @@ Scope {
     id: root
 
     property bool open: false
+    // "apps" or "clipboard"; Tab switches between them.
+    property string mode: "apps"
 
-    // Toggled from sway: `qs ipc call launcher toggle`
+    // Toggled from sway: `qs -c sway ipc call launcher toggle` / `... clipboard`
     IpcHandler {
         target: "launcher"
 
-        function toggle(): void { root.open = !root.open; }
-        function show(): void { root.open = true; }
+        function toggle(): void { root.show("apps", !root.open); }
+        function show(): void { root.show("apps", true); }
         function hide(): void { root.open = false; }
+        function clipboard(): void { root.show("clipboard", !root.open || root.mode !== "clipboard"); }
+    }
+
+    function show(mode: string, open: bool): void {
+        root.mode = mode;
+        root.open = open;
+        if (open && mode === "clipboard")
+            clipList.running = true;
+    }
+
+    // Clipboard history from cliphist (see cliphist.service), newest first.
+    readonly property string cliphist: `${Quickshell.env("HOME")}/.local/share/mise/shims/cliphist`
+    property var clips: []
+
+    Process {
+        id: clipList
+        command: [root.cliphist, "list"]
+        stdout: StdioCollector {
+            // One "<id>\t<preview>" line per entry.
+            onStreamFinished: root.clips = this.text.split("\n").filter(line => line).map(line => ({
+                line,
+                text: line.slice(line.indexOf("\t") + 1),
+                image: /^\[\[ binary data /.test(line.slice(line.indexOf("\t") + 1)),
+            }))
+        }
+    }
+
+    function results(query: string): list<var> {
+        if (root.mode === "apps")
+            return root.search(query);
+        const q = query.trim().toLowerCase();
+        return root.clips.filter(clip => clip.text.toLowerCase().includes(q));
+    }
+
+    function activate(item: var): void {
+        if (root.mode === "apps")
+            root.launch(item);
+        else
+            root.paste(item);
+    }
+
+    // Puts a history entry back on the clipboard.
+    function paste(clip: var): void {
+        root.open = false;
+        Quickshell.execDetached(["sh", "-c", 'printf "%s\\n" "$1" | "$0" decode | wl-copy', root.cliphist, clip.line]);
+    }
+
+    function forget(clip: var): void {
+        root.clips = root.clips.filter(c => c !== clip);
+        Quickshell.execDetached(["sh", "-c", 'printf "%s\\n" "$1" | "$0" delete', root.cliphist, clip.line]);
     }
 
     function search(query: string): list<var> {
@@ -119,9 +171,16 @@ Scope {
 
                     BarText {
                         visible: input.text === ""
-                        text: "Search applications"
+                        text: root.mode === "apps" ? "Search applications" : "Search clipboard"
                         color: Theme.muted
                         font.pixelSize: input.font.pixelSize
+                    }
+
+                    BarText {
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: root.mode === "apps" ? "Tab: clipboard" : "Tab: apps  ·  Del: forget"
+                        color: Theme.muted
                     }
 
                     Keys.onPressed: event => {
@@ -134,7 +193,13 @@ Scope {
                             list.decrementCurrentIndex();
                         } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
                             if (list.currentItem)
-                                root.launch(list.currentItem.modelData);
+                                root.activate(list.currentItem.modelData);
+                        } else if (event.key === Qt.Key_Tab) {
+                            root.show(root.mode === "apps" ? "clipboard" : "apps", true);
+                            list.currentIndex = 0;
+                        } else if (event.key === Qt.Key_Delete && root.mode === "clipboard") {
+                            if (list.currentItem)
+                                root.forget(list.currentItem.modelData);
                         } else {
                             return;
                         }
@@ -154,7 +219,7 @@ Scope {
                     Layout.fillWidth: true
                     implicitHeight: Math.min(contentHeight, 10 * 36)
                     clip: true
-                    model: root.search(input.text)
+                    model: root.results(input.text)
                     highlightMoveDuration: 0
 
                     highlight: Rectangle {
@@ -165,14 +230,16 @@ Scope {
                     delegate: MouseArea {
                         id: entry
 
-                        required property DesktopEntry modelData
+                        // A DesktopEntry, or a clipboard entry from root.clips.
+                        required property var modelData
                         required property int index
+                        readonly property bool clip: root.mode === "clipboard"
 
                         width: ListView.view.width
                         height: 36
                         hoverEnabled: true
                         onEntered: list.currentIndex = index
-                        onClicked: root.launch(modelData)
+                        onClicked: root.activate(modelData)
 
                         RowLayout {
                             anchors.fill: parent
@@ -181,13 +248,21 @@ Scope {
                             spacing: 10
 
                             IconImage {
+                                visible: !entry.clip
                                 implicitSize: 22
-                                source: Quickshell.iconPath(entry.modelData.icon, "application-x-executable")
+                                source: entry.clip ? "" : Quickshell.iconPath(entry.modelData.icon, "application-x-executable")
+                            }
+
+                            Icon {
+                                visible: entry.clip
+                                Layout.preferredWidth: 22
+                                text: entry.modelData.image ? "\uf03e" : "\uf328" // image, clipboard
+                                color: Theme.muted
                             }
 
                             BarText {
                                 Layout.fillWidth: true
-                                text: entry.modelData.name
+                                text: entry.clip ? entry.modelData.text : entry.modelData.name
                                 elide: Text.ElideRight
                             }
                         }

@@ -1,0 +1,13 @@
+{{ if and (not .container) (eq .chezmoi.osRelease.id "fedora") (lookPath "flatpak") -}}
+#!/bin/bash
+# flatpaks hash: {{ .flatpaks | toJson | sha256sum }}
+set -euo pipefail
+
+installed=$(flatpak list --system --app --columns=application)
+missing=()
+for app in {{ .flatpaks | join " " }}; do
+  grep -qx "$app" <<<"$installed" || missing+=("$app")
+done
+
+[ ${#missing[@]} -eq 0 ] || flatpak install --system --noninteractive flathub "${missing[@]}"
+{{ end -}}

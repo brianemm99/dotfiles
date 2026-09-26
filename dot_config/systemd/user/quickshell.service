@@ -6,7 +6,8 @@ After=graphical-session.target
 Requisite=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/qs
+# The sway config in ~/.config/quickshell/sway/
+ExecStart=/usr/bin/qs -c sway
 Restart=on-failure
 RestartSec=2
 

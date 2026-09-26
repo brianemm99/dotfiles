@@ -16,8 +16,8 @@ set $right l
 # Your preferred terminal emulator
 # Recommends: foot
 set $term ghostty
-# Your preferred application launcher (quickshell, see ~/.config/quickshell/Launcher.qml)
-set $menu qs ipc call launcher toggle
+# Your preferred application launcher (quickshell, see ~/.config/quickshell/sway/Launcher.qml)
+set $menu qs -c sway ipc call launcher toggle
 
 ### Output configuration
 #
@@ -63,6 +63,8 @@ output * bg /usr/share/backgrounds/default.jxl fill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    # Clipboard history (Super+V is splitv)
+    bindsym $mod+Shift+v exec qs -c sway ipc call launcher clipboard
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

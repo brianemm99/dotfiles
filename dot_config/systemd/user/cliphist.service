@@ -1,0 +1,16 @@
+[Unit]
+Description=Clipboard history (cliphist)
+Documentation=https://github.com/sentriz/cliphist
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+# cliphist comes from mise; wl-paste runs it by name on every copy.
+Environment=PATH=%h/.local/share/mise/shims:/usr/bin
+ExecStart=/usr/bin/wl-paste --watch cliphist store
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=sway-session.target

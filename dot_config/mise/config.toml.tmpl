@@ -9,3 +9,7 @@ starship = "latest"
 {{- if not .container }}
 tmux = "latest"
 {{- end }}
+{{- if and (not .container) (eq .chezmoi.osRelease.id "fedora") }}
+# clipboard history, stored by cliphist.service and browsed in the sway quickshell launcher
+"github:sentriz/cliphist" = { version = "latest", bin = "cliphist" }
+{{- end }}
