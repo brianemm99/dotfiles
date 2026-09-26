@@ -55,6 +55,6 @@ command -v starship >/dev/null && eval "$(starship init bash)"
 # export KUBECONFIG=~/.kube/k3s.yaml
 
 # devsy dev containers
-# source <(devsy completion bash)
-# dws() { devsy workspace "$@"; }
+source <(devsy completion bash)
+dws() { devsy workspace "$@"; }
 
