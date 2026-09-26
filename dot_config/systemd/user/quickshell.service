@@ -1,0 +1,14 @@
+[Unit]
+Description=Quickshell (bar, notifications, launcher)
+Documentation=https://quickshell.org
+PartOf=graphical-session.target
+After=graphical-session.target
+Requisite=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/qs
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=sway-session.target

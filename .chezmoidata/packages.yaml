@@ -1,0 +1,22 @@
+# System packages layered onto the Fedora Atomic base image (rpm-ostree).
+# CLI tools that don't need system integration belong in mise instead.
+ostree:
+  repos:
+    brave-browser: https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    tailscale: https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+  coprs:
+    - scottames/ghostty
+    - errornointernet/quickshell
+  packages:
+    - brave-browser
+    - btop
+    - fastfetch
+    - ghostty
+    - neovim
+    - quickshell
+    - tailscale
+    - tmux
+  # base image packages replaced by quickshell
+  remove:
+    - dunst
+    - rofi

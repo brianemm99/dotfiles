@@ -1,0 +1,28 @@
+{{ if stat "/run/ostree-booted" -}}
+#!/bin/bash
+# ostree hash: {{ .ostree | toJson | sha256sum }}
+set -euo pipefail
+
+{{ range $name, $url := .ostree.repos -}}
+[ -f /etc/yum.repos.d/{{ $name }}.repo ] || sudo curl -fsSLo /etc/yum.repos.d/{{ $name }}.repo {{ $url | quote }}
+{{ end -}}
+{{ range .ostree.coprs -}}
+{{- $p := splitList "/" . -}}
+[ -f "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ index $p 0 }}:{{ index $p 1 }}.repo" ] || \
+  sudo curl -fsSLo "/etc/yum.repos.d/_copr:copr.fedorainfracloud.org:{{ index $p 0 }}:{{ index $p 1 }}.repo" \
+  "https://copr.fedorainfracloud.org/coprs/{{ . }}/repo/fedora-{{ $.chezmoi.osRelease.versionID }}/{{ index $p 0 }}-{{ index $p 1 }}-fedora-{{ $.chezmoi.osRelease.versionID }}.repo"
+{{ end }}
+# deployments[0] is the newest (pending if one is staged, otherwise booted)
+removed=$(rpm-ostree status --json | jq -r '.deployments[0]["requested-base-removals"][]?')
+remove=()
+for pkg in {{ .ostree.remove | join " " }}; do
+  grep -qx "$pkg" <<<"$removed" || remove+=("$pkg")
+done
+
+rpm-ostree install --idempotent --allow-inactive {{ .ostree.packages | join " " }}
+[ ${#remove[@]} -eq 0 ] || rpm-ostree override remove "${remove[@]}"
+
+if [ "$(rpm-ostree status --json | jq '.deployments[0].booted')" != "true" ]; then
+  echo "rpm-ostree: new deployment staged, reboot to apply (systemctl reboot)"
+fi
+{{ end -}}
