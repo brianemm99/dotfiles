@@ -4,6 +4,8 @@ Using chezmoi, mise, and devcontainers to use and manage dotfiles across contain
 
 Still building..
 
+LazyVim
+
 Devcontainer: [devsy](https://github.com/devsy-org/devsy)
 
 Separate Arch container build and Arch desktop
