@@ -43,16 +43,17 @@ command -v starship >/dev/null && eval "$(starship init bash)"
 
 # kubectl completion
 
-# alias k='kubectl'
+ alias k='kubectl'
 
-# [[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
+[[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
 
-# source <(kubectl completion bash)
+source <(kubectl completion bash)
 
-# complete -o default -F __start_kubectl k
+complete -o default -F __start_kubectl k
 
 # k3s kubeconfig
 # export KUBECONFIG=~/.kube/k3s.yaml
+
 
 # devsy dev containers
 source <(devsy completion bash)
