@@ -15,6 +15,9 @@ Singleton {
     property bool centerOpen: false
     // Do not disturb: only critical and transient notifications pop up.
     property bool dnd: false
+    // Singletons load on first use; load (and seed) this one now, before the
+    // connection notification at login.
+    readonly property var knownNetworks: KnownNetworks
     // Notification id -> Date it arrived.
     property var received: ({})
 
@@ -41,6 +44,10 @@ Singleton {
         persistenceSupported: true
 
         onNotification: notif => {
+            // Only announce networks that are new; untracked, it's dropped entirely.
+            if (KnownNetworks.isRepeat(notif))
+                return;
+
             // Sway's volume/brightness keys tag their notifications with this hint;
             // replace the previous one instead of stacking a popup per keypress.
             const sync = notif.hints["x-canonical-private-synchronous"];
