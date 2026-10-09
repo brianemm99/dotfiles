@@ -5,6 +5,7 @@ format = """
 $hostname\
 $directory\
 $git_branch\
+$kubernetes\
 $fill\
 $time\
 $line_break\
@@ -31,6 +32,12 @@ format = '[$symbol $branch]($style) '
 symbol = ' '
 style = 'bold yellow'
 
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+symbol = '󱃾 '
+style = 'bold yellow'
+
 [time]
 disabled = false
 format = '[$time]($style) '
@@ -40,4 +47,3 @@ style = 'bold purple'
 [character]
 success_symbol = "[➜](bold purple)"
 error_symbol = "[✗](bold red)"
-
