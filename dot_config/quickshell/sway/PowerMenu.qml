@@ -5,50 +5,57 @@ import Quickshell
 BarMenu {
     id: root
 
-    readonly property list<var> actions: [
-        { icon: "\uf186", command: ["systemctl", "suspend"], danger: false },
-        { icon: "\uf2f9", command: ["systemctl", "reboot"], danger: true },
-        { icon: "\uf011", command: ["systemctl", "poweroff"], danger: true },
-    ]
+    icon: ""
 
-    function run(command: list<string>): void {
-        root.open = false;
-        Quickshell.execDetached(command);
+    component Action: Rectangle {
+        id: action
+
+        required property string icon
+        property bool danger: false
+        signal clicked
+
+        width: root.width
+        height: root.height
+        radius: Theme.radius
+        color: hover.containsMouse ? Theme.border : "transparent"
+
+        Icon {
+            anchors.centerIn: parent
+            text: action.icon
+            color: hover.containsMouse
+                ? (action.danger ? Theme.urgent : Theme.accent)
+                : Theme.fg
+        }
+
+        MouseArea {
+            id: hover
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: {
+                root.open = false;
+                action.clicked();
+            }
+        }
     }
-
-    icon: "\uf011"
 
     Column {
         spacing: 2
 
-        Repeater {
-            model: root.actions
+        Action {
+            icon: ""
+            onClicked: Quickshell.execDetached(["systemctl", "suspend"])
+        }
 
-            Rectangle {
-                id: action
+        Action {
+            icon: ""
+            danger: true
+            onClicked: Quickshell.execDetached(["systemctl", "reboot"])
+        }
 
-                required property var modelData
-
-                width: root.width
-                height: root.height
-                radius: Theme.radius
-                color: hover.containsMouse ? Theme.border : "transparent"
-
-                Icon {
-                    anchors.centerIn: parent
-                    text: action.modelData.icon
-                    color: hover.containsMouse
-                        ? (action.modelData.danger ? Theme.urgent : Theme.accent)
-                        : Theme.fg
-                }
-
-                MouseArea {
-                    id: hover
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: root.run(action.modelData.command)
-                }
-            }
+        Action {
+            icon: ""
+            danger: true
+            onClicked: Quickshell.execDetached(["systemctl", "poweroff"])
         }
     }
 }
