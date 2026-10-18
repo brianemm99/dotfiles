@@ -34,8 +34,7 @@ style = 'bold yellow'
 
 [kubernetes]
 disabled = false
-format = '[$symbol$context( \($namespace\))]($style) '
-symbol = '󱃾 '
+format = '[$context( \($namespace\))]($style)'
 style = 'bold yellow'
 
 [time]
