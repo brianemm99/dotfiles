@@ -30,11 +30,12 @@ PanelWindow {
     Row {
         id: left
         anchors.left: parent.left
-        anchors.leftMargin: Theme.padding
+        anchors.leftMargin: Theme.barEdgePadding
         anchors.verticalCenter: parent.verticalCenter
-        spacing: Theme.spacing * 1.5
+        spacing: Theme.spacing * 2.25 // ⏻ to workspaces
 
         PowerButton {
+            screen: bar.screen
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -45,6 +46,7 @@ PanelWindow {
     }
 
     Clock {
+        screen: bar.screen
         anchors.centerIn: parent
     }
 

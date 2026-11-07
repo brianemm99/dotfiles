@@ -280,7 +280,7 @@ local function qs(target, fn)
     return hl.dsp.exec_cmd("qs ipc -c hyprland call " .. target .. " " .. (fn or "toggle"))
 end
 
-hl.bind(mainMod .. " + R",      qs("launcher"))
+hl.bind(mainMod .. " + D",      qs("launcher"))
 hl.bind(mainMod .. " + A",      qs("media"))
 hl.bind(mainMod .. " + C",      qs("calendar"))
 hl.bind(mainMod .. " + I",      qs("resources"))

@@ -1,9 +1,15 @@
 import QtQuick
+import Quickshell
 import qs
 import qs.components
+import qs.services
 
-// Opens the power menu. Stub until PowerMenu.qml exists (build step 8).
+// Opens the power menu on this bar's screen.
 IconText {
+    id: root
+
+    required property ShellScreen screen
+
     text: "⏻"
     color: mouse.containsMouse ? Theme.accent : Theme.fg
 
@@ -13,6 +19,6 @@ IconText {
         anchors.margins: -4
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: {} // step 8: open qs:power
+        onClicked: Power.toggle(root.screen)
     }
 }

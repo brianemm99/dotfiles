@@ -22,6 +22,7 @@ Singleton {
     readonly property int radius: 8
     readonly property int spacing: 8
     readonly property int padding: 10
+    readonly property int barEdgePadding: 16   // bar ends: ⏻ on the left, tray on the right
     readonly property int iconSize: 16
 
     // fonts: text and Nerd Font icons from one family

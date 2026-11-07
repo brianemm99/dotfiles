@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=bluetui
+GenericName=Bluetooth Manager
+Comment=Manage Bluetooth devices in a terminal
+Exec=ghostty -e bluetui
+Icon=bluetui
+Terminal=false
+Categories=Settings;HardwareSettings;
+Keywords=bluetooth;pair;headphones;

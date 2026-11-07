@@ -2,9 +2,14 @@ import QtQuick
 import Quickshell
 import qs
 import qs.components
+import qs.services
 
-// Date and time, updated on the minute. Click opens the calendar (build step 9).
+// Date and time, updated on the minute. Click opens the calendar on this bar's screen.
 IconText {
+    id: root
+
+    required property ShellScreen screen
+
     SystemClock {
         id: clock
         precision: SystemClock.Minutes
@@ -15,6 +20,6 @@ IconText {
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: {} // step 9: open qs:calendar
+        onClicked: CalendarState.toggle(root.screen)
     }
 }

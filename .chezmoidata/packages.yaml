@@ -28,6 +28,7 @@ pacman:
   - ghostty
   - discord
   - spotify-launcher
+  - obsidian
   - btop
   - fastfetch
   # containers
