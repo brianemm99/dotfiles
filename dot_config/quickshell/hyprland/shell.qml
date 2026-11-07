@@ -10,4 +10,7 @@ ShellRoot {
 
         Bar {}
     }
+
+    // toasts and the history panel; also starts the notification daemon
+    Notifications {}
 }

@@ -58,6 +58,9 @@ PanelWindow {
         Network {}
         BluetoothIndicator {}
         DisplayMode {}
+        NotificationBell {
+            screen: bar.screen
+        }
         QuickSettings {}
         Battery {}
         Tray {
