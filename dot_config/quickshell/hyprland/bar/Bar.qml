@@ -51,8 +51,17 @@ PanelWindow {
     }
 
     Clock {
+        id: clock
         screen: bar.screen
         anchors.centerIn: parent
+    }
+
+    // right of the clock; the clock stays centred
+    NowPlaying {
+        screen: bar.screen
+        anchors.left: clock.right
+        anchors.leftMargin: Theme.spacing * 1.5
+        anchors.verticalCenter: parent.verticalCenter
     }
 
     Row {

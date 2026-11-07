@@ -28,4 +28,7 @@ ShellRoot {
 
     // SUPER + I, the rings on the bar
     Resources {}
+
+    // click on the media module right of the clock (no keybind)
+    Media {}
 }

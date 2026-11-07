@@ -1,0 +1,9 @@
+# One wallpaper on every monitor (panel, ultrawide, anything plugged in). The image lives
+# outside the repo; chezmoi fills in the home directory so no username is committed.
+splash = false
+
+wallpaper {
+    monitor =
+    path = {{ .chezmoi.homeDir }}/photos/wallpapers/red-orange-space.png
+    fit_mode = cover
+}
