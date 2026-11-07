@@ -54,3 +54,6 @@ dot_gnupg/
 dot_aws/credentials
 dot_config/**/token*
 dot_config/gh/hosts.yml
+
+# spec
+quickshell.md

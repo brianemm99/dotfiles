@@ -78,5 +78,5 @@ fi
 source <(_completion flux)
 
 # devsy dev containers
-source <(devsy completion bash)
+source <(_completion devsy)
 dws() { devsy workspace "$@"; }

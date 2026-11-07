@@ -1,0 +1,17 @@
+{{ if and (not .container) (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/bash
+# packages hash: {{ list .pacman .aur | toJson | sha256sum }}
+set -euo pipefail
+
+sudo pacman -Syu --needed --noconfirm {{ .pacman | join " " }}
+
+# bootstrap yay on a fresh install
+if ! command -v yay >/dev/null; then
+  tmp="$(mktemp -d)"
+  git clone --depth 1 https://aur.archlinux.org/yay-bin.git "$tmp/yay-bin"
+  (cd "$tmp/yay-bin" && makepkg -si --noconfirm)
+  rm -rf "$tmp"
+fi
+
+yay -S --needed --noconfirm {{ .aur | join " " }}
+{{ end -}}

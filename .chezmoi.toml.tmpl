@@ -2,5 +2,8 @@
 {{- if or (stat "/.dockerenv") (stat "/run/.containerenv") (env "REMOTE_CONTAINERS") -}}
 {{-   $container = true -}}
 {{- end -}}
+# use the repo where it was cloned (e.g. ~/repos/dotfiles) instead of ~/.local/share/chezmoi
+sourceDir = {{ .chezmoi.sourceDir | quote }}
+
 [data]
     container = {{ $container }}

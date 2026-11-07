@@ -1,15 +1,12 @@
 [Unit]
-Description=Quickshell (bar, notifications, launcher)
-Documentation=https://quickshell.org
+Description=Quickshell
 PartOf=graphical-session.target
 After=graphical-session.target
-Requisite=graphical-session.target
 
 [Service]
-# The sway config in ~/.config/quickshell/sway/
-ExecStart=/usr/bin/qs -c sway
-Restart=on-failure
-RestartSec=2
+ExecStart=/usr/bin/qs -c hyprland
+Restart=always
+RestartSec=1
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=graphical-session.target

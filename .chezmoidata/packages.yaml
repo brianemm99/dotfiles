@@ -1,27 +1,36 @@
-# System packages layered onto the Fedora Atomic base image (rpm-ostree).
+# Arch host packages, installed by .chezmoiscripts/run_onchange_before_10-packages.sh.tmpl.
 # CLI tools that don't need system integration belong in mise instead.
-ostree:
-  repos:
-    brave-browser: https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-    tailscale: https://pkgs.tailscale.com/stable/fedora/tailscale.repo
-  coprs:
-    - scottames/ghostty
-    - errornointernet/quickshell
-  packages:
-    - brave-browser
-    - btop
-    - fastfetch
-    - ghostty
-    - neovim
-    - quickshell
-    - tailscale
-    - tmux
-  # base image packages replaced by quickshell
-  remove:
-    - dunst
-    - rofi
+pacman:
+  # base
+  - base-devel           # needed to build AUR packages
+  - git
+  - bash-completion
+  # desktop
+  - hyprland
+  - hypridle
+  - hyprlock
+  - hyprpolkitagent
+  - xdg-desktop-portal-hyprland
+  - quickshell
+  # audio, media and brightness keys
+  - pipewire
+  - pipewire-pulse
+  - wireplumber          # provides wpctl
+  - brightnessctl
+  - playerctl
+  # apps
+  - ghostty
+  - discord
+  - spotify-launcher
+  - btop
+  - fastfetch
+  # containers
+  - podman
 
-# Desktop apps from Flathub, installed system-wide (Fedora only).
-flatpaks:
-  - com.discordapp.Discord
-  - com.spotify.Client
+aur:
+  - brave-bin
+
+# Not installed by the script: needs manual setup (2FA login).
+# To install: sudo pacman -S tailscale && sudo systemctl enable --now tailscaled && sudo tailscale up
+manual:
+  - tailscale

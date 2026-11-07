@@ -1,19 +1,13 @@
 setup
 README.md
+laptop.md
+quickshell.md
+test.md
+system
 
-
-{{ if ne .chezmoi.osRelease.id "fedora" }}
-.config/sway
-{{ end }}
-{{/* Fedora Atomic + sway desktop: quickshell config (`qs -c sway`) */}}
-{{ if or .container (ne .chezmoi.osRelease.id "fedora") }}
-.config/quickshell/sway
-.config/systemd/user/quickshell.service
-.config/systemd/user/cliphist.service
-.config/systemd/user/sway-session.target.wants
-{{ end }}
-{{/* Arch + Hyprland desktop: quickshell config goes in .config/quickshell/hyprland (`qs -c hyprland`) */}}
+{{/* Arch + Hyprland desktop only; never inside a devcontainer */}}
 {{ if or .container (ne .chezmoi.osRelease.id "arch") }}
 .config/hypr
-.config/quickshell/hyprland
+.config/quickshell
+.config/systemd/user
 {{ end }}

@@ -1,0 +1,11 @@
+{{ if and (not .container) (eq .chezmoi.osRelease.id "arch") -}}
+#!/bin/bash
+# system files hash: {{ output "sh" "-c" (printf "cd %q && find . -type f -exec sha256sum {} + | sort" (joinPath .chezmoi.sourceDir "system")) | sha256sum }}
+# Installs everything under system/ to the same path under /. Changes to logind need a reboot.
+set -euo pipefail
+
+cd {{ joinPath .chezmoi.sourceDir "system" | quote }}
+find . -type f -print0 | while IFS= read -r -d '' f; do
+  sudo install -Dm644 "$f" "/${f#./}"
+done
+{{ end -}}

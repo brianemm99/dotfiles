@@ -10,4 +10,4 @@ Devcontainer: [devsy](https://github.com/devsy-org/devsy)
 
 Separate Arch container build and Arch desktop
 
-Building out separate Arch PC and Fedora Atomic Laptop dotfiles coexisting in chezmoi
+Arch + Hyprland + Quickshell desktop (Framework 13), plus Arch devcontainers, from one chezmoi source
