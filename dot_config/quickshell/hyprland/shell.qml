@@ -25,4 +25,7 @@ ShellRoot {
 
     // SUPER + C, clock click
     Calendar {}
+
+    // SUPER + I, the rings on the bar
+    Resources {}
 }

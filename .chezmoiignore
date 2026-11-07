@@ -10,4 +10,10 @@ system
 .config/hypr
 .config/quickshell
 .config/systemd/user
+.config/containers
+{{ end }}
+
+{{/* podman storage points at the infra volume; skip it where that isn't mounted */}}
+{{ if not (stat "/infra/containers") }}
+.config/containers
 {{ end }}

@@ -39,6 +39,11 @@ PanelWindow {
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        ResourceRings {
+            screen: bar.screen
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
         Workspaces {
             monitor: bar.monitor
             anchors.verticalCenter: parent.verticalCenter
