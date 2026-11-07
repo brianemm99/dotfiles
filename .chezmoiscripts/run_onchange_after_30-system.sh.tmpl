@@ -1,11 +1,24 @@
 {{ if and (not .container) (eq .chezmoi.osRelease.id "arch") -}}
 #!/bin/bash
 # system files hash: {{ output "sh" "-c" (printf "cd %q && find . -type f -exec sha256sum {} + | sort" (joinPath .chezmoi.sourceDir "system")) | sha256sum }}
-# Installs everything under system/ to the same path under /. Changes to logind need a reboot.
+# Installs everything under system/ to the same path under /, then enables system services.
+# Changes to logind need a reboot.
 set -euo pipefail
 
 cd {{ joinPath .chezmoi.sourceDir "system" | quote }}
 find . -type f -print0 | while IFS= read -r -d '' f; do
-  sudo install -Dm644 "$f" "/${f#./}"
+  case "$f" in
+    ./etc/sudoers.d/*)
+      # a broken sudoers file locks sudo out: check it first; sudo wants 0440
+      visudo -cf "$f" >/dev/null
+      sudo install -Dm440 -o root -g root "$f" "/${f#./}"
+      ;;
+    *)
+      sudo install -Dm644 "$f" "/${f#./}"
+      ;;
+  esac
 done
+
+sudo systemctl enable --now iwd.service
+sudo systemctl enable --now power-profiles-daemon.service
 {{ end -}}

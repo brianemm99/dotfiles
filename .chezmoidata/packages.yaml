@@ -12,6 +12,12 @@ pacman:
   - hyprpolkitagent
   - xdg-desktop-portal-hyprland
   - quickshell
+  - iwd                  # Wi-Fi; the bar and settings talk to it directly
+  # system daemons Quickshell's service modules talk to over D-Bus
+  - upower               # Quickshell.Services.UPower: battery
+  - power-profiles-daemon
+  - framework-system     # framework_tool: battery charge limit (sudoers.d/framework-charge-limit)
+  - bluetui              # Bluetooth TUI, opened from the bar
   # audio, media and brightness keys
   - pipewire
   - pipewire-pulse
@@ -32,5 +38,7 @@ aur:
 
 # Not installed by the script: needs manual setup (2FA login).
 # To install: sudo pacman -S tailscale && sudo systemctl enable --now tailscaled && sudo tailscale up
+# Then, once, so Quickshell's Tailscale switch can run tailscale up/down without sudo:
+#   sudo tailscale set --operator=$USER
 manual:
   - tailscale

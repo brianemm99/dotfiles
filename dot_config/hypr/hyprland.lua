@@ -285,7 +285,6 @@ hl.bind(mainMod .. " + A",      qs("media"))
 hl.bind(mainMod .. " + C",      qs("calendar"))
 hl.bind(mainMod .. " + I",      qs("resources"))
 hl.bind(mainMod .. " + N",      qs("notifications"))
-hl.bind(mainMod .. " + comma",  qs("settings"))
 hl.bind(mainMod .. " + Escape", qs("power"))
 
 -- Move focus with mainMod + arrow keys

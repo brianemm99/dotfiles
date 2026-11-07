@@ -1,0 +1,3 @@
+# Quickshell's charge-limit toggle (services/ChargeLimit.qml): read the limit, or set it to 70 % or 100 %.
+# Exact arguments only; any other framework_tool use still needs a password.
+%wheel ALL=(root) NOPASSWD: /usr/bin/framework_tool --charge-limit, /usr/bin/framework_tool --charge-limit 70, /usr/bin/framework_tool --charge-limit 100
