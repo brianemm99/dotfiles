@@ -4,7 +4,7 @@ import qs
 import qs.components
 import qs.services
 
-// Live rings on the bar: storage, CPU, RAM (left to right), usage % inside. Click opens the larger
+// Live rings on the bar: CPU, RAM (left to right), usage % inside. Storage is only in the drop-down. Click opens the larger
 // resources drop-down right under them.
 Item {
     id: root
@@ -26,9 +26,6 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         spacing: 6
 
-        BarRing {
-            pct: Sysinfo.diskPct
-        }
         BarRing {
             pct: Sysinfo.cpuPct
         }

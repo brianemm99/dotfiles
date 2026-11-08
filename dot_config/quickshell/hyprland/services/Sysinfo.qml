@@ -6,7 +6,8 @@ import Quickshell.Io
 
 // CPU, memory, storage and CPU temperature, polled every 2 s for the bar's rings and the
 // resources drop-down. One short shell read per poll: /proc, the k10temp sensor, and df.
-// Storage is the filesystem that holds $HOME (/ today; /home once it has its own volume).
+// Storage: one entry per volume in `mounts` that is really mounted (a missing one would only
+// repeat its parent filesystem, so it is dropped).
 Singleton {
     id: root
 
@@ -19,11 +20,9 @@ Singleton {
     property real memUsed: 0
     readonly property real memPct: memTotal > 0 ? memUsed / memTotal * 100 : 0
 
-    property real diskTotal: 0          // bytes
-    property real diskUsed: 0
-    property real diskFree: 0
-    property string diskMount: ""
-    readonly property real diskPct: diskTotal > 0 ? diskUsed / diskTotal * 100 : 0
+    readonly property var mounts: ["/", "/home", "/container"]
+    // [{ mount, total, used, free, pct }] in `mounts` order; bytes
+    property var volumes: []
 
     // previous /proc/stat totals, for the CPU delta
     property var lastCpu: null
@@ -34,6 +33,7 @@ Singleton {
     }
 
     function parse(text) {
+        const vols = [];
         for (const line of text.split("\n")) {
             const f = line.trim().split(/\s+/);
             switch (f[0]) {
@@ -60,14 +60,18 @@ Singleton {
             case "temp":
                 cpuTemp = Number(f[1]) / 1000;
                 break;
-            case "disk":
-                diskTotal = Number(f[1]);
-                diskUsed = Number(f[2]);
-                diskFree = Number(f[3]);
-                diskMount = f[4] ?? "";
+            case "disk": {
+                const mount = f[4] ?? "";
+                if (mounts.includes(mount) && !vols.some(v => v.mount === mount)) {
+                    const total = Number(f[1]), used = Number(f[2]);
+                    vols.push({ mount, total, used, free: Number(f[3]), pct: total > 0 ? used / total * 100 : 0 });
+                }
                 break;
             }
+            }
         }
+        vols.sort((a, b) => mounts.indexOf(a.mount) - mounts.indexOf(b.mount));
+        volumes = vols;
     }
 
     Process {
@@ -80,8 +84,8 @@ Singleton {
             for h in /sys/class/hwmon/hwmon*; do
               [ "$(cat "$h/name" 2>/dev/null)" = k10temp ] && echo "temp $(cat "$h/temp1_input")"
             done
-            df -B1 --output=size,used,avail,target "$HOME" | awk 'NR==2{print "disk", $1, $2, $3, $4}'
-        `]
+            df -B1 --output=size,used,avail,target "$@" 2>/dev/null | awk 'NR>1{print "disk", $1, $2, $3, $4}'
+        `, "sh"].concat(root.mounts)
         stdout: StdioCollector {
             onStreamFinished: root.parse(text)
         }
