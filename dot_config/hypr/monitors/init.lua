@@ -208,7 +208,7 @@ end
 ---------------------------------------------------------------- workspaces
 
 local function home(i)
-  return i <= dev.workspace_split and dev.ultrawide.output or dev.internal.output
+  return i <= dev.workspace_split and dev.internal.output or dev.ultrawide.output
 end
 
 for i = 1, 10 do
