@@ -10,7 +10,7 @@ IconText {
 
     required property ShellScreen screen
 
-    text: "⏻"
+    text: "\uf303"  // Arch logo (Nerd Font nf-linux-archlinux)
     color: mouse.containsMouse ? Theme.accent : Theme.fg
 
     MouseArea {

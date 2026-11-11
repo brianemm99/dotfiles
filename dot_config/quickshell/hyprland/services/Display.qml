@@ -14,6 +14,7 @@ Singleton {
     property bool lidClosed: false
     property var externals: []
     readonly property bool hasExternal: externals.length > 0
+    property int workspaceSplit: 5      // dual: 1..split on the ultrawide, the rest on the panel
 
     // "" goes back to automatic. A refused override changes nothing; the file shows the real state.
     function setOverride(mode) {
@@ -37,6 +38,7 @@ Singleton {
                 root.override = s.override ?? "";
                 root.lidClosed = s.lid === "closed";
                 root.externals = s.externals ?? [];
+                root.workspaceSplit = s.workspace_split ?? 5;
             } catch (e) {
                 console.warn("hypr-display.json:", e);
             }

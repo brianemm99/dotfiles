@@ -21,6 +21,7 @@ return {
   -- where the panel sits in dual mode: "below" | "left" | "right"
   dual_placement = "left",
 
-  -- workspaces 1..split go to the panel, the rest to the ultrawide
+  -- dual: workspaces 1..split go to the ultrawide, the rest (up to 10) to the panel.
+  -- one screen: the bar shows 1..split; the rest still work and show while in use
   workspace_split = 5,
 }

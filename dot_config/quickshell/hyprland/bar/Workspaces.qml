@@ -2,10 +2,12 @@ import QtQuick
 import Quickshell.Io
 import Quickshell.Hyprland
 import qs
+import qs.services
 
-// One dot per workspace that belongs on this bar's monitor, in id order: its home
-// workspaces (from Hyprland's workspace rules, so the split lives only in
-// monitors/devices.lua) plus any other workspace currently on this monitor.
+// One dot per workspace that belongs on this bar's monitor, in id order, plus any other
+// workspace currently on this monitor. In dual mode the home workspaces come from
+// Hyprland's workspace rules; with one screen they are 1..split. The split lives only
+// in monitors/devices.lua (published through hypr-display.json for one-screen mode).
 // The visible workspace of each monitor is a solid dot (accent on the focused monitor).
 // Others with windows are hollow fg; unused ones (missing or empty) are a small muted dot.
 // Urgent is crit.
@@ -35,9 +37,14 @@ Row {
     // Special workspaces have negative ids and are hidden.
     readonly property var ids: {
         const set = new Set();
-        for (const id in root.rules)
-            if (homeOf(Number(id)) === root.monitor)
-                set.add(Number(id));
+        if (Display.mode === "dual") {
+            for (const id in root.rules)
+                if (homeOf(Number(id)) === root.monitor)
+                    set.add(Number(id));
+        } else {
+            for (let id = 1; id <= Display.workspaceSplit; id++)
+                set.add(id);
+        }
         for (const w of Hyprland.workspaces.values)
             if (w.id > 0 && w.monitor === root.monitor)
                 set.add(w.id);

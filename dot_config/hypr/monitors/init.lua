@@ -93,10 +93,11 @@ local function publish(lid, ext)
   local f = io.open(path .. ".tmp", "w")
   if not f then return end
   f:write(string.format(
-    '{"mode":"%s","override":%s,"lid":"%s","externals":[%s]}',
+    '{"mode":"%s","override":%s,"lid":"%s","externals":[%s],"workspace_split":%d}',
     D.mode, D.override and ('"' .. D.override .. '"') or "null",
     lid and "closed" or "open",
-    #ext > 0 and ('"' .. table.concat(ext, '","') .. '"') or ""))
+    #ext > 0 and ('"' .. table.concat(ext, '","') .. '"') or "",
+    dev.workspace_split))
   f:close()
   os.rename(path .. ".tmp", path)          -- atomic: Quickshell never reads half a file
 end
@@ -207,8 +208,10 @@ end
 
 ---------------------------------------------------------------- workspaces
 
+-- with one screen the rule's monitor may be absent; Hyprland then opens the workspace
+-- on the focused monitor, so 1..split land on whichever screen is lit
 local function home(i)
-  return i <= dev.workspace_split and dev.internal.output or dev.ultrawide.output
+  return i <= dev.workspace_split and dev.ultrawide.output or dev.internal.output
 end
 
 for i = 1, 10 do
