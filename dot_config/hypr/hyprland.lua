@@ -286,6 +286,19 @@ hl.bind(mainMod .. " + I", qs("resources"))
 hl.bind(mainMod .. " + N", qs("notifications"))
 hl.bind(mainMod .. " + Escape", qs("power"))
 
+-- Screenshots (grim + slurp): saved to ~/photos/screenshots and copied to clipboard
+local function screenshot(geometry)
+  return hl.dsp.exec_cmd([[sh -c 'f="$HOME/photos/screenshots/$(date +%Y-%m-%d_%H-%M-%S).png"; ]] ..
+    (geometry or "") ..
+    [[grim ${g:+-g "$g"} "$f" && wl-copy < "$f"']])
+end
+
+hl.bind(mainMod .. " + period", screenshot())
+hl.bind(mainMod .. " + ALT + period", screenshot(
+  [[g=$(hyprctl activewindow | awk '"'"'$1=="at:"{split($2,a,",")} $1=="size:"{split($2,s,",")} ]] ..
+  [[END{if(s[1]) printf "%s,%s %sx%s", a[1], a[2], s[1], s[2]}'"'"'); [ -n "$g" ] || exit 1; ]]))
+hl.bind(mainMod .. " + SHIFT + period", screenshot([[g=$(slurp) || exit 1; ]]))
+
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
